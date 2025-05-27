@@ -1,0 +1,21 @@
+name: Generate Snake
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # setiap hari
+  workflow_dispatch:     # bisa dijalankan manual juga
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Platane/snk@master
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: dist/snake.svg
+
+      - name: Push to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
